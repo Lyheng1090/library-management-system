@@ -251,4 +251,4 @@ For support and questions, please contact the development team or create an issu
 
 ---
 
-**Built with ❤️ using Django and modern web technologies**
+**Built with  using Django and modern web technologies**
