@@ -115,8 +115,7 @@ library_system/
 
 3. **Install dependencies**
    ```bash
-   pip install django==5.2.1
-   pip install pillow  # For image handling
+   pip install -r requirements.txt
    ```
 
 4. **Run migrations**
