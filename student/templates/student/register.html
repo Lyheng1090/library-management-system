@@ -1,0 +1,428 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Registration - Library System{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+
+    .register-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 0;
+    }
+
+    .register-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 1000px;
+        width: 100%;
+    }
+
+    .register-header {
+        background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        color: white;
+        padding: 30px 40px;
+        text-align: center;
+    }
+
+    .register-body {
+        padding: 40px;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+
+    .btn-register {
+        background: linear-gradient(135deg, #27ae60 0%, #2c3e50 100%);
+        border: none;
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        color: white;
+    }
+
+    .section-header {
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .required-field {
+        color: #e74c3c;
+    }
+
+    .help-text {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+
+    .form-check-input:checked {
+        background-color: #3498db;
+        border-color: #3498db;
+    }
+
+    .alert {
+        border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .register-body {
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="register-card">
+                    <!-- Header -->
+                    <div class="register-header">
+                        <h2 class="mb-2">
+                            <i class="bi bi-person-plus-fill me-2"></i>
+                            Student Registration
+                        </h2>
+                        <p class="mb-0 opacity-75">Join our library community and access thousands of resources</p>
+                    </div>
+
+                    <!-- Registration Form -->
+                    <div class="register-body">
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <strong>Registration Failed!</strong>
+                            <ul class="mb-0 mt-2">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li>{{ field|title }}: {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            
+                            <!-- Account Information -->
+                            <div class="mb-4">
+                                <h4 class="section-header">
+                                    <i class="bi bi-person-circle me-2"></i>Account Information
+                                </h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.username.id_for_label }}" class="form-label">
+                                            <i class="bi bi-at me-1"></i>Username <span class="required-field">*</span>
+                                        </label>
+                                        {{ form.username }}
+                                        {% if form.username.help_text %}
+                                            <div class="help-text">{{ form.username.help_text }}</div>
+                                        {% endif %}
+                                        {% if form.username.errors %}
+                                            <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.email.id_for_label }}" class="form-label">
+                                            <i class="bi bi-envelope me-1"></i>Email Address <span class="required-field">*</span>
+                                        </label>
+                                        {{ form.email }}
+                                        {% if form.email.errors %}
+                                            <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.password1.id_for_label }}" class="form-label">
+                                            <i class="bi bi-lock me-1"></i>Password <span class="required-field">*</span>
+                                        </label>
+                                        {{ form.password1 }}
+                                        {% if form.password1.help_text %}
+                                            <div class="help-text">{{ form.password1.help_text }}</div>
+                                        {% endif %}
+                                        {% if form.password1.errors %}
+                                            <div class="text-danger small mt-1">{{ form.password1.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.password2.id_for_label }}" class="form-label">
+                                            <i class="bi bi-lock-fill me-1"></i>Confirm Password <span class="required-field">*</span>
+                                        </label>
+                                        {{ form.password2 }}
+                                        {% if form.password2.help_text %}
+                                            <div class="help-text">{{ form.password2.help_text }}</div>
+                                        {% endif %}
+                                        {% if form.password2.errors %}
+                                            <div class="text-danger small mt-1">{{ form.password2.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Personal Information -->
+                            <div class="mb-4">
+                                <h4 class="section-header">
+                                    <i class="bi bi-person-badge me-2"></i>Personal Information
+                                </h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                                            <i class="bi bi-person me-1"></i>First Name <span class="required-field">*</span>
+                                        </label>
+                                        {{ form.first_name }}
+                                        {% if form.first_name.errors %}
+                                            <div class="text-danger small mt-1">{{ form.first_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                                            <i class="bi bi-person me-1"></i>Last Name <span class="required-field">*</span>
+                                        </label>
+                                        {{ form.last_name }}
+                                        {% if form.last_name.errors %}
+                                            <div class="text-danger small mt-1">{{ form.last_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.phone_number.id_for_label }}" class="form-label">
+                                            <i class="bi bi-telephone me-1"></i>Phone Number <span class="required-field">*</span>
+                                        </label>
+                                        {{ form.phone_number }}
+                                        {% if form.phone_number.errors %}
+                                            <div class="text-danger small mt-1">{{ form.phone_number.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.gender.id_for_label }}" class="form-label">
+                                            <i class="bi bi-people me-1"></i>Gender <span class="required-field">*</span>
+                                        </label>
+                                        {{ form.gender }}
+                                        {% if form.gender.errors %}
+                                            <div class="text-danger small mt-1">{{ form.gender.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.age.id_for_label }}" class="form-label">
+                                            <i class="bi bi-calendar-event me-1"></i>Age <span class="required-field">*</span>
+                                        </label>
+                                        {{ form.age }}
+                                        <div class="help-text">
+                                            <i class="bi bi-info-circle me-1"></i>
+                                            Age will be automatically calculated from your date of birth
+                                        </div>
+                                        {% if form.age.errors %}
+                                            <div class="text-danger small mt-1">{{ form.age.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">
+                                            <i class="bi bi-calendar3 me-1"></i>Date of Birth <span class="required-field">*</span>
+                                        </label>
+                                        {{ form.date_of_birth }}
+                                        {% if form.date_of_birth.errors %}
+                                            <div class="text-danger small mt-1">{{ form.date_of_birth.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="{{ form.address.id_for_label }}" class="form-label">
+                                        <i class="bi bi-geo-alt me-1"></i>Address <span class="required-field">*</span>
+                                    </label>
+                                    {{ form.address }}
+                                    {% if form.address.errors %}
+                                        <div class="text-danger small mt-1">{{ form.address.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Terms and Conditions -->
+                            <div class="mb-4">
+                                <h4 class="section-header">
+                                    <i class="bi bi-file-text me-2"></i>Terms and Conditions
+                                </h4>
+                                <div class="form-check">
+                                    {{ form.terms_accepted }}
+                                    <label class="form-check-label" for="{{ form.terms_accepted.id_for_label }}">
+                                        {{ form.terms_accepted.label }}
+                                    </label>
+                                    {% if form.terms_accepted.errors %}
+                                        <div class="text-danger small mt-1">{{ form.terms_accepted.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        By registering, you agree to:
+                                        <ul class="small mt-1">
+                                            <li>Follow library rules and regulations</li>
+                                            <li>Return borrowed items on time</li>
+                                            <li>Pay any applicable fines promptly</li>
+                                            <li>Respect library property and other users</li>
+                                            <li>Keep your account information updated</li>
+                                        </ul>
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                                <a href="{% url 'login' %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left me-2"></i>Back to Login
+                                </a>
+                                <button type="submit" class="btn btn-register btn-lg">
+                                    <i class="bi bi-person-check me-2"></i>Register as Student
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Additional Information -->
+                        <div class="mt-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title mb-3">
+                                        <i class="bi bi-info-circle me-2"></i>What happens after registration?
+                                    </h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <ul class="list-unstyled small">
+                                                <li><i class="bi bi-check text-success me-2"></i>Instant account activation</li>
+                                                <li><i class="bi bi-check text-success me-2"></i>Auto-generated student ID</li>
+                                                <li><i class="bi bi-check text-success me-2"></i>Access to book borrowing</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul class="list-unstyled small">
+                                                <li><i class="bi bi-check text-success me-2"></i>Room booking privileges</li>
+                                                <li><i class="bi bi-check text-success me-2"></i>Online catalog access</li>
+                                                <li><i class="bi bi-check text-success me-2"></i>Personal dashboard</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Focus on username field when page loads
+    document.getElementById('{{ form.username.id_for_label }}').focus();
+      // Age calculation from date of birth
+    const dobField = document.getElementById('{{ form.date_of_birth.id_for_label }}');
+    const ageField = document.getElementById('{{ form.age.id_for_label }}');
+    
+    // Make age field readonly since it's auto-calculated
+    if (ageField) {
+        ageField.setAttribute('readonly', true);
+        ageField.style.backgroundColor = '#f8f9fa';
+        ageField.setAttribute('placeholder', 'Will be calculated from date of birth');
+    }
+    
+    if (dobField && ageField) {
+        dobField.addEventListener('change', function() {
+            const dob = new Date(this.value);
+            const today = new Date();
+            
+            if (dob && dob <= today) {
+                let age = today.getFullYear() - dob.getFullYear();
+                const monthDiff = today.getMonth() - dob.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                    age--;
+                }
+                
+                if (age >= 16 && age <= 100) {
+                    ageField.value = age;
+                    ageField.classList.remove('is-invalid');
+                } else {
+                    ageField.value = '';
+                    if (age < 16) {
+                        alert('You must be at least 16 years old to register.');
+                    } else if (age > 100) {
+                        alert('Please check your date of birth.');
+                    }
+                }
+            } else {
+                ageField.value = '';
+            }
+        });
+    }
+    
+    // Password strength indicator
+    const password1 = document.getElementById('{{ form.password1.id_for_label }}');
+    const password2 = document.getElementById('{{ form.password2.id_for_label }}');
+    
+    if (password2) {
+        password2.addEventListener('input', function() {
+            if (password1.value !== password2.value) {
+                password2.classList.add('is-invalid');
+                password2.classList.remove('is-valid');
+            } else if (password2.value.length > 0) {
+                password2.classList.remove('is-invalid');
+                password2.classList.add('is-valid');
+            }
+        });
+    }
+    
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const requiredFields = this.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Please fill in all required fields.');
+        }
+    });
+});
+</script>
+{% endblock %}
